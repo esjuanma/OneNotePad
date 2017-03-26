@@ -9,9 +9,6 @@ class NotePad extends React.Component {
 
 		super(props);
 
-		console.log(props)
-		console.log(this.props)
-
 		this.state = {
 			playersQuantity	: props.players.length,
 			players			: this.genPlayers(props.players),
@@ -28,8 +25,6 @@ class NotePad extends React.Component {
 				history		: null
 			}
 		};
-
-		window.Uno = this.state;
 
 		this.showOptions();
 		this.startTimer();
@@ -161,12 +156,11 @@ class NotePad extends React.Component {
 		this.setState({
 			timerPaused : false
 		});
+
 		this.stopTimer();
 	}
 
 	onLoadFinished () {
-
-		console.log('on load finished called');
 
 		this.startTimer();
 	}
@@ -287,8 +281,6 @@ class NotePad extends React.Component {
 
 	savePoints () {
 
-		console.log('adding points')
-
 		let validatedPoints = this.validPoints();
 
 		if(validatedPoints.valid) {
@@ -319,8 +311,6 @@ class NotePad extends React.Component {
 
 		this.state.players.forEach(player => {
 
-			console.log('player', player)
-
 			if(player.isWinning) {
 				winner = player;
 			}
@@ -332,8 +322,6 @@ class NotePad extends React.Component {
 		});
 
 		if(endedGame && winner) {
-
-			console.log('winner!', winner);
 
 			this.props.onGameEnd({
 				players : this.state.players,
@@ -412,10 +400,6 @@ class NotePad extends React.Component {
 	}
 
 	handleLoad (event) {
-
-		console.log('event', event)
-
-		window.e = event;
 
 		if ( this.state.loadingPoints ) {
 
