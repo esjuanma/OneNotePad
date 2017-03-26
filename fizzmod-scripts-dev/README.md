@@ -1,2 +1,0 @@
-# fizzmod-scripts
-Fizzmod scripts
