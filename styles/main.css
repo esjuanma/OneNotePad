@@ -1,0 +1,486 @@
+@import 'reset.css';
+@import 'keyframes.css';
+
+@font-face {
+	font-family: 'Code';
+	src: url('../fonts/code-bold.otf');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Code';
+	src: url('../fonts/code-light.otf');
+	font-weight: 300;
+	font-style: normal;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background-color: #FE1B24;
+}
+
+body, input {
+	font-family: Code; 
+	color: white;
+	text-shadow: 0 1px 2px rgba(0,0,0,.5);
+	letter-spacing: .5px;
+}
+
+input {
+	outline: 0;
+	text-decoration: none;
+}
+
+.installer {
+	height: 100%;
+	background: white;
+	color: #0C3;
+	font-family: Arial;
+	text-shadow: none;
+	text-align: right;
+	padding: 12px;
+}
+
+.installer .fa {
+	display: inline;
+}
+
+@media (display-mode: standalone) {
+	
+	.installer {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	
+	.installer {
+		display: none;
+	}
+}
+
+
+/*	-----------------------------------------------
+	Global
+	---------------------------------------------*/
+
+#appContainer {
+	height: 100%;
+}
+
+#appContainer>div,
+#appContainer>form {
+	height: 100%;
+}
+
+.step {
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	padding: 0 5%;	
+}
+
+.step.start {
+	background-image: url(../img/bg-red.png);
+}
+
+.step.notepad {
+	background-image: url(../img/bg-blue.png);
+}
+
+.step.end {
+	background-image: url(../img/bg-green.png);
+}
+
+
+/*	-----------------------------------------------
+	Start
+	---------------------------------------------*/
+
+.step.start form {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+/* Title */
+.step.start .title {
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 25px;
+}
+
+.step.start .title i {
+	margin-right: 10px;
+}
+
+/* Input */
+.step.start .input-container {
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.step.start .input-container i {
+	position: absolute;
+	right: 15px;
+	top: 0;
+	line-height: 49px;
+	font-size: 26px;
+}
+
+.step.start .prompt-submit {
+	font-size: 120px;
+}
+
+.step.start input {
+	width: 100%;
+	height: 49px;
+	background: rgba(255,255,255,.2);
+	border: 2px solid rgba(255,255,255,.5);
+	text-align: center;
+	border-radius: 5px;
+	color: white;
+	font-family: Code;
+	box-sizing: border-box;
+	letter-spacing: .5px;
+}
+.step.start input:focus {
+	outline: 0;
+}
+
+.step.start input,
+.step.start .faded-name {
+	font-size: 24px;
+	line-height: 81px;
+	font-weight: bold;
+}
+
+.step.start .faded-name {
+	position: absolute;
+	width: 100%;
+	height: 49px;
+	line-height: 49px;
+	left: 0;
+	top: 0;
+}
+
+
+/*	-----------------------------------------------
+	NotePad
+	---------------------------------------------*/
+
+/* Clock */
+#clock {
+	display: flex;
+	justify-content: center;
+	height: 130px;
+	line-height: 130px;
+}
+
+.sand-clock {
+    font-size: 32px;
+    width: 70px;
+    padding-right: 5px;
+    text-align: right;
+}
+.fast-forward .sand-clock .fa {
+	animation: rotate 1s infinite ease-in-out;
+}
+.fast-forward .round-sense .fa {
+	animation-duration: .5s;
+}
+
+.time {
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;
+}
+.time .number {
+	width: 30px;
+	display: inline-block;
+	text-align: center;
+}
+
+.round-sense {
+    font-size: 70px;
+    width: 70px;
+    text-align: center;
+	transform: rotateY(180deg);
+	transition: .3s transform;
+}
+.round-sense.clockwise {
+	transform: rotateY(0);
+}
+
+.round-sense i {
+	transition: .3s transform;
+    animation: rotate 4s infinite linear;
+}
+
+.dots {
+
+}
+
+/* Table */
+
+.box {
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+	background: rgba(255,255,255,.25);
+	border-radius: 7px;
+	margin-bottom: 30px;
+	border: 1px solid rgba(255,255,255,.2);
+}
+
+#results {
+	position: relative;
+	font-size: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#results .header,
+#results .body {
+	display: flex;
+}
+
+#results .header {
+	flex: 0 0;
+}
+
+#results .body {
+	overflow: auto;
+	flex: 1 1;
+}
+
+.col, .button {
+	flex-grow: 1;
+	flex-basis: 0;
+}
+
+.col:last-child .cell,
+.button:last-child {
+	border-right: 0;
+}
+
+.cell {
+	border-right: 2px solid #A0D5F6;
+}
+
+/* Loading state */
+.notepad.loading #clock {
+	opacity: .7;
+	text-shadow: none;
+}
+.notepad.loading.loaded #clock {
+	opacity: 1;
+	text-shadow: none;
+}
+.notepad.timer-paused #clock > span,
+.notepad.loaded #clock > span {
+	animation: customClock 1s infinite;
+}
+
+.notepad.loading .cell.points-loader {
+	transition: .3s background;
+	background: #A0D5F6;
+}
+
+.notepad.loading .round-sense .fa {
+	animation: none;
+}
+
+.notepad.loading .fa-hourglass-start::before {
+	content: '\f253';
+}
+
+.header .cell {
+	border-bottom: 2px solid #A0D5F6;
+	padding: 20px 0;
+}
+
+.header .cell span {
+	position: relative;
+}
+
+.header .cell .fa-hand-paper-o {
+	font-size: 18px;
+	position: relative;
+	left: -8px;
+	top: -2px;
+}
+
+.header .cell .fa-circle,
+.header .cell .fa-star {
+	position: absolute;
+	font-size: 16px;
+}
+
+.header .cell .fa-circle {
+	top: -9px;
+	right: -16px;
+}
+
+.header .cell .fa-star {
+	font-size: 23px;
+	color: #FE0;
+	top: -12px;
+	right: -20px;
+}
+
+.header .cell .fa-circle .number,	
+.header .cell .fa-star .number {
+	left: 0;
+	position: absolute;
+	color: #49adec;
+	font-family: "Code";
+	font-size: 13px;
+	font-weight: bold;
+	text-shadow: none;
+}
+
+.header .cell .fa-circle .number {
+	width: 14px;
+	line-height: 17px;
+}
+
+.header .cell .fa-star .number {
+	width: 22px;
+	line-height: 24px;
+}
+
+.body .cell {
+	padding: 12px 0;
+}
+
+.step.notepad {
+	display: flex;
+	flex-direction: column;
+}
+
+#buttons {
+	display: flex;
+}
+
+.button {
+	font-size: 16px;
+	line-height: 45px;
+	border-right: 2px solid #A0D5F6;
+}
+
+.button .fa {
+	margin-right: 7px;
+}
+
+.cell input {
+	font-family: Code;
+	font-weight: bold;
+	font-size: 24px;
+	color: white;
+	text-align: center;
+	background: transparent;
+	border: 0;
+	width: 100%;
+}
+
+.timer {
+	display: none;
+	position: absolute;
+	left: -16px;
+	padding-top: 66px;
+}
+.timer .row {
+    height: 48px;
+    line-height: 48px;
+}
+.timer .row span {
+	background: white;
+	border-radius: 4PX;
+	color: #1195E7;
+	text-shadow: none;
+	font-size: 17px;
+	padding: 3px 3px 3px 5px;
+	letter-spacing: 1px;
+}
+
+/* Modals */
+
+.modal-container,
+.modal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.modal-container {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: linear-gradient(rgba(255,255,255,.7), rgba(255,150,0,.7));
+	z-index: 1;
+	animation: show 1s;
+	padding: 0 5%;
+}
+
+.modal {
+	background: #01A358;
+	border: 2px solid white;
+	border-radius: 4px;
+	text-align: center;
+	box-shadow: 0 5px 5px rgba(0,0,0,.25);
+	text-shadow: none;
+	padding: 15px 5%;
+	width: 80%;
+}
+
+.modal > span {
+	line-height: 24px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	font-size: 15px;
+}
+
+.modal > span > span {
+	display: block;
+}
+
+.modal span .fa {
+	margin-right: 10px;
+}
+
+
+/*	-----------------------------------------------
+	End
+	---------------------------------------------*/
+
+.step.end {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+}
+
+.step.end .winner {
+	font-size: 50px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	line-height: 70px;
+	border-bottom: 4px solid white;
+	box-shadow: 0 3px 3px -3px #333;
+	margin-bottom: 50px;
+}
+
+.step.end .star {
+	font-size: 100px;
+}

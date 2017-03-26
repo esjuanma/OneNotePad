@@ -1,0 +1,31 @@
+{
+  "short_name": "OneNotePad",
+  "name": "OneNotePad v0.9",
+  "icons": [
+    {
+      "src": "img/launcher-thumb-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/launcher-thumb-256.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/launcher-thumb-384.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/launcher-thumb-512.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#FE1B24",
+  "theme_color": "#FE1B24", 
+  "start_url": "/OneNotePad/index.html",
+  "display": "standalone",
+  "orientation": "portrait"
+}

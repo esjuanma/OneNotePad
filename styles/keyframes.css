@@ -1,0 +1,15 @@
+@keyframes rotate {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
+@keyframes show {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+
+@keyframes customClock {
+	0% {opacity: .7;}
+	50% {opacity: 1;}
+	100% {opacity: .7;}
+}
