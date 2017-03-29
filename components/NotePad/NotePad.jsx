@@ -26,15 +26,7 @@ class NotePad extends React.Component {
 			}
 		};
 
-		this.showOptions();
 		this.startTimer();
-	}
-
-	showOptions () {
-
-		setTimeout(() => {
-			this.setState({ showOptions : true });
-		}, 500);
 	}
 
 	genPlayers (players) {
@@ -450,11 +442,10 @@ class NotePad extends React.Component {
 					{this.playersPoints()}
 				</div>
 
-				{this.state.showOptions &&
-				<div id="buttons" className="box animated swing">
+				<div id="buttons" className="box animated fadeInUp">
 					<div className="button" onClick={this.errorShow.bind(this)} data-message="Próximamente estará la tabla" data-icon="bar-chart"><i className="fa fa-history"></i>Ver historial</div>
 					<div className="button" onClick={this.errorShow.bind(this)} data-message="¡Próximamente!" data-icon="hand-pointer-o"><i className="fa fa-cogs"></i>Configuración</div>
-				</div>}
+				</div>
 
 				<Errors errorMessage={this.state.errorMessage} onErrorClose={this.removeError.bind(this)} />
 

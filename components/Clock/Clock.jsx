@@ -31,11 +31,9 @@ class Clock extends React.Component {
 
 	flipClock (event) {
 
-		if(this.props.timerPaused) return;
+		if(this.props.timerPaused || this.props.loadingPoints) return;
 
 		event.stopPropagation();
-
-		if(this.props.loadingPoints) return;
 
 		this.setState({
 			clockwise : !this.state.clockwise

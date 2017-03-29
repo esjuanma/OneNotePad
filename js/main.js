@@ -9565,9 +9565,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 		let local = JSON.parse(localStorage.getItem('gameHistory'));
 
-		console.log(local);
 		local.push(data);
-		console.log(local);
 
 		localStorage.setItem('gameHistory', JSON.stringify(local));
 
@@ -9642,11 +9640,9 @@ class Clock extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 	flipClock(event) {
 
-		if (this.props.timerPaused) return;
+		if (this.props.timerPaused || this.props.loadingPoints) return;
 
 		event.stopPropagation();
-
-		if (this.props.loadingPoints) return;
 
 		this.setState({
 			clockwise: !this.state.clockwise
@@ -9715,7 +9711,8 @@ class GameEnd extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				"div",
 				{ className: "star animated flip" },
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-star" })
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-star" }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-star hover" })
 			),
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				"div",
@@ -9723,6 +9720,21 @@ class GameEnd extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 				"\xA1Gan\xF3 ",
 				this.props.winner,
 				"!"
+			),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				"div",
+				{ className: "actions animated fadeIn" },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					"span",
+					null,
+					"Desempatar"
+				),
+				" - ",
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					"span",
+					null,
+					"Jugar otra partida"
+				)
 			)
 		);
 	}
@@ -9751,9 +9763,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 		super(props);
 
-		console.log(props);
-		console.log(this.props);
-
 		this.state = {
 			playersQuantity: props.players.length,
 			players: this.genPlayers(props.players),
@@ -9771,17 +9780,7 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 			}
 		};
 
-		window.Uno = this.state;
-
-		this.showOptions();
 		this.startTimer();
-	}
-
-	showOptions() {
-
-		setTimeout(() => {
-			this.setState({ showOptions: true });
-		}, 500);
 	}
 
 	genPlayers(players) {
@@ -9899,12 +9898,11 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 		this.setState({
 			timerPaused: false
 		});
+
 		this.stopTimer();
 	}
 
 	onLoadFinished() {
-
-		console.log('on load finished called');
 
 		this.startTimer();
 	}
@@ -10059,8 +10057,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 	savePoints() {
 
-		console.log('adding points');
-
 		let validatedPoints = this.validPoints();
 
 		if (validatedPoints.valid) {
@@ -10090,8 +10086,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 		this.state.players.forEach(player => {
 
-			console.log('player', player);
-
 			if (player.isWinning) {
 				winner = player;
 			}
@@ -10103,8 +10097,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 		});
 
 		if (endedGame && winner) {
-
-			console.log('winner!', winner);
 
 			this.props.onGameEnd({
 				players: this.state.players,
@@ -10182,10 +10174,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 	handleLoad(event) {
 
-		console.log('event', event);
-
-		window.e = event;
-
 		if (this.state.loadingPoints) {
 
 			this.savePoints();
@@ -10233,9 +10221,9 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 				this.playersHeader(),
 				this.playersPoints()
 			),
-			this.state.showOptions && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
-				{ id: 'buttons', className: 'box animated swing' },
+				{ id: 'buttons', className: 'box animated fadeInUp' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
 					{ className: 'button', onClick: this.errorShow.bind(this), 'data-message': 'Pr\xF3ximamente estar\xE1 la tabla', 'data-icon': 'bar-chart' },
