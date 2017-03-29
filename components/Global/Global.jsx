@@ -43,8 +43,19 @@ class Game extends React.Component {
 
 	endGame (data) {
 
-		if( ! localStorage.gameHistory ) {
+		this.saveGame(data);
 
+		this.setState({
+			winner : data.winner.name
+		});
+
+		this.setView('gameEnd');
+	}
+
+	saveGame (data) {
+
+		// If no previous history..
+		if( ! localStorage.gameHistory ) {
 			localStorage.setItem('gameHistory', '[]');
 		}
 
@@ -53,12 +64,6 @@ class Game extends React.Component {
 		local.push(data);
 
 		localStorage.setItem('gameHistory', JSON.stringify(local));
-
-		this.setState({
-			winner : data.winner.name
-		});
-
-		this.setView('gameEnd');
 	}
 
 	render () {

@@ -15,7 +15,7 @@ class Clock extends React.Component {
 
 		const zeroFormat = t => t >= 10 ? `${t}` :  `0${t}`;
 
-		const spanned = (t) => (
+		const spanned = t => (
 			<span>
 				<span className="number">{t[0]}</span>
 				<span className="number">{t[1]}</span>

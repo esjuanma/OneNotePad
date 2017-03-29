@@ -9,6 +9,14 @@ class GameEnd extends React.Component {
 		this.state = {};
 	}
 
+	resetGame () {
+
+	}
+
+	playAnother () {
+		
+	}
+
 	render () {
 
 		return (
