@@ -77,4 +77,4 @@ class Game extends React.Component {
 	}
 }
 
-ReactDOM.render(<Game/>, document.getElementById('appContainer'));
+ReactDOM.render(<Game/>, document.getElementsByClassName('app')[0]);

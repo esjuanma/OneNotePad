@@ -9558,8 +9558,19 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 	endGame(data) {
 
-		if (!localStorage.gameHistory) {
+		this.saveGame(data);
 
+		this.setState({
+			winner: data.winner.name
+		});
+
+		this.setView('gameEnd');
+	}
+
+	saveGame(data) {
+
+		// If no previous history..
+		if (!localStorage.gameHistory) {
 			localStorage.setItem('gameHistory', '[]');
 		}
 
@@ -9568,12 +9579,6 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 		local.push(data);
 
 		localStorage.setItem('gameHistory', JSON.stringify(local));
-
-		this.setState({
-			winner: data.winner.name
-		});
-
-		this.setView('gameEnd');
 	}
 
 	render() {
@@ -9590,7 +9595,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 	}
 }
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Game, null), document.getElementById('appContainer'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Game, null), document.getElementsByClassName('app')[0]);
 
 /***/ }),
 /* 82 */
@@ -9702,6 +9707,10 @@ class GameEnd extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 		this.state = {};
 	}
+
+	resetGame() {}
+
+	playAnother() {}
 
 	render() {
 

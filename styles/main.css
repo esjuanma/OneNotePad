@@ -67,12 +67,12 @@ input {
 	Global
 	---------------------------------------------*/
 
-#appContainer {
+.app {
 	height: 100%;
 }
 
-#appContainer>div,
-#appContainer>form {
+.app>div,
+.app>form {
 	height: 100%;
 }
 
