@@ -20,8 +20,7 @@ class Game extends React.Component {
 		super(props);
 
 		this.state = {
-			view	: 'start',
-			players : ['Juan', 'Fran', 'Agus']
+			view	: 'start'
 		};
 	}
 
@@ -77,4 +76,6 @@ class Game extends React.Component {
 	}
 }
 
-ReactDOM.render(<Game/>, document.getElementsByClassName('app')[0]);
+console.log('Qué onda')
+
+ReactDOM.render(<Game/>, document.getElementById('app'));

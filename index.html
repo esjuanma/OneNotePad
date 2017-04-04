@@ -16,15 +16,26 @@
 </head>
 <body>
 
-	<!--<div class="installer">
+	<div class="installer">
 		<span>Clickeá acá</span>
 		<i class="fa fa-arrow-up"></i><br>
 		<span> y luego "Agregar a la pantalla principal"</span>
-	</div>-->
+	</div>
 
-	<div class="app"></div>
+	<div id="app"></div>
 
 	<script src="js/main.js"></script>
+
+	<script>
+		
+		// Removes phone installer layer with escape
+		document.body.onkeydown = event => {
+			if(event.keyCode == 27) {
+				document.querySelector('.installer').remove();
+			}
+		};
+
+	</script>
 
 </body>
 </html>
