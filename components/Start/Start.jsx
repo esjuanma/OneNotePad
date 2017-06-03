@@ -11,7 +11,8 @@ class Start extends React.Component {
 			player		: '',
 			players		: [],
 			fadedNames	: [],
-			errorMessage: ''
+			errorMessage: '',
+			ready		: false
 		}
 
 		this.handleChange = this.handleChange.bind(this);
@@ -100,10 +101,13 @@ class Start extends React.Component {
 					</div>
 					
 					<div className="input-container animated slideInUp">
+						
 						{/* Player input */}
 						<input value={this.state.player} type="text" className="players" onChange={this.handleChange} />
+						
 						{/* Right arrow */}
 						<i className="fa fa-arrow-right user-submit" onClick={this.submit}></i>
+						
 						{/* Faded name animation */}
 						{this.state.fadedNames.length != 0 &&
 							this.state.fadedNames.map(fadedName => <div className="faded-name animated fadeOutUp">{fadedName}</div>)
@@ -111,7 +115,7 @@ class Start extends React.Component {
 					</div>
 
 					{/* Finish load */}
-					<div className="prompt-submit animated slideInUp" onClick={this.finishLoad}><i className="fa fa-check"></i></div>
+					<div className={"prompt-submit animated slideInUp" + (this.state.players.length >= 2 || (this.state.players.length == 1 && this.state.player != '') ? ' ready' : '') } onClick={this.finishLoad}><i className="fa fa-check"></i></div>
 
 				</form>
 

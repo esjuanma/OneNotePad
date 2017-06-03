@@ -437,7 +437,6 @@ class NotePad extends React.Component {
 				<Clock elapsedTime={this.state.elapsedTime} onClick={this.handleLoad.bind(this)} loadingPoints={this.state.loadingPoints} fastForward={this.state.fastForward} timerPaused={this.state.timerPaused} />
 
 				<div id="results" className="box animated zoomIn">
-					{this.timings()}
 					{this.playersHeader()}
 					{this.playersPoints()}
 				</div>

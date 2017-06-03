@@ -135,7 +135,13 @@ input {
 }
 
 .step.start .prompt-submit {
+	transition: .3s opacity;
 	font-size: 120px;
+	opacity: .5;
+}
+
+.step.start .prompt-submit.ready {
+	opacity: 1;
 }
 
 .step.start input {
@@ -258,7 +264,7 @@ input {
 }
 
 #results .body {
-	overflow: auto;
+	overflow-y: auto;
 	flex: 1 1;
 }
 
@@ -394,17 +400,11 @@ input {
 	width: 100%;
 }
 
-.timer {
-	display: none;
-	position: absolute;
+span.timer {
 	left: -16px;
-	padding-top: 66px;
-}
-.timer .row {
-    height: 48px;
-    line-height: 48px;
-}
-.timer .row span {
+	height: 48px;
+	line-height: 48px;
+	position: absolute;
 	background: white;
 	border-radius: 4PX;
 	color: #1195E7;

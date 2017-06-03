@@ -34,7 +34,7 @@ class GameEnd extends React.Component {
 			errorMessage : null
 		});
 	}
-	
+
 	render () {
 
 		return (
@@ -44,7 +44,8 @@ class GameEnd extends React.Component {
 				<div className="star animated flip"><i className="fa fa-star"></i><i className="fa fa-star hover"></i></div>
 				<div className="winner animated zoomInUp">¡Ganó {this.props.winner}!</div>
 				<div className="actions animated fadeIn">
-					<span onClick={this.errorShow.bind(this)} data-message="Oops!" data-icon="hand-pointer-o">Desempatar</span> - 
+					<span onClick={this.errorShow.bind(this)} data-message="Oops!" data-icon="hand-pointer-o">Desempatar</span>
+					-
 					<span onClick={this.errorShow.bind(this)} data-message="Oops!" data-icon="hand-pointer-o">Jugar otra partida</span>
 				</div>
 

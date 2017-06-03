@@ -9758,7 +9758,7 @@ class GameEnd extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 					{ onClick: this.errorShow.bind(this), 'data-message': 'Oops!', 'data-icon': 'hand-pointer-o' },
 					'Desempatar'
 				),
-				' -',
+				'-',
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'span',
 					{ onClick: this.errorShow.bind(this), 'data-message': 'Oops!', 'data-icon': 'hand-pointer-o' },
@@ -10247,7 +10247,6 @@ class NotePad extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'div',
 				{ id: 'results', className: 'box animated zoomIn' },
-				this.timings(),
 				this.playersHeader(),
 				this.playersPoints()
 			),
@@ -10295,7 +10294,8 @@ class Start extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 			player: '',
 			players: [],
 			fadedNames: [],
-			errorMessage: ''
+			errorMessage: '',
+			ready: false
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -10397,7 +10397,7 @@ class Start extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
-					{ className: 'prompt-submit animated slideInUp', onClick: this.finishLoad },
+					{ className: "prompt-submit animated slideInUp" + (this.state.players.length >= 2 || this.state.players.length == 1 && this.state.player != '' ? ' ready' : ''), onClick: this.finishLoad },
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-check' })
 				)
 			),
