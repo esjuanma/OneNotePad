@@ -3,7 +3,6 @@ import React from 'react';
 class Clock extends React.Component {
 
 	constructor(props) {
-
 		super(props);
 
 		this.state = {
@@ -12,7 +11,6 @@ class Clock extends React.Component {
 	}
 
 	parsedElapsedTime () {
-
 		const zeroFormat = t => t >= 10 ? `${t}` :  `0${t}`;
 
 		const spanned = t => (
@@ -22,27 +20,25 @@ class Clock extends React.Component {
 			</span>
 		);
 
-		let time = this.props.elapsedTime;
-		let minutes = spanned(zeroFormat(Math.floor(time / 60)));
-		let seconds = spanned(zeroFormat(time % 60));
+		const time = this.props.elapsedTime;
+		const minutes = spanned(zeroFormat(Math.floor(time / 60)));
+		const seconds = spanned(zeroFormat(time % 60));
 		
 		return { minutes , seconds };
 	}
 
 	flipClock (event) {
+		event.stopPropagation();
 
 		if(this.props.timerPaused || this.props.loadingPoints) return;
 
-		event.stopPropagation();
-
 		this.setState({
-			clockwise : !this.state.clockwise
+			clockwise: !this.state.clockwise
 		});
 	}
 
 	render () {
-
-		let time = this.parsedElapsedTime();
+		const time = this.parsedElapsedTime();
 
 		return (
 			<div id="clock" className={"animated zoomInUp" + (this.props.fastForward ? ' fast-forward' : '') + (this.props.timerPaused ? ' timer-paused' : '')} onClick={this.props.onClick}>

@@ -6,7 +6,6 @@ import Player from '../../js/Player.js';
 class NotePad extends React.Component {
 
 	constructor (props) {
-
 		super(props);
 
 		this.state = {
@@ -30,21 +29,18 @@ class NotePad extends React.Component {
 	}
 
 	genPlayers (players) {
-
 		return players.map((playerName, i) => new Player(playerName, i));
 	}
 
 	resetNextPoints () {
-
 		this.setState({
-			nextPoints : this.pointsList(''),
-			loadingPoints : false
+			nextPoints: this.pointsList(''),
+			loadingPoints: false
 		});
 	}
 
 	pointsList (val, playersQuantity) {
-
-		let points = [];
+		const points = [];
 
 		playersQuantity = playersQuantity || this.state.playersQuantity;
 
@@ -56,21 +52,19 @@ class NotePad extends React.Component {
 	}
 
 	reStartTimer () {
-
-		let elapsedTime = this.state.elapsedTime;
+		let { elapsedTime } = this.state;
 
 		this.setState({
-			elapsedTime : elapsedTime,
-			fastForward : true
+			elapsedTime,
+			fastForward: true
 		});
 
-		let animationTime = 3;
-		let intervalDelay = 10;
-		let steps = animationTime * 1000 / intervalDelay; // tengo 300 pasos
-		let stepSize = Math.ceil(elapsedTime / steps);
+		const animationTime = 3;
+		const intervalDelay = 10;
+		const steps = animationTime * 1000 / intervalDelay; // tengo 300 pasos
+		const stepSize = Math.ceil(elapsedTime / steps);
 
-		let interval = setInterval(() => {
-
+		const interval = setInterval(() => {
 			elapsedTime -= stepSize;
 
 			if(elapsedTime < 0) elapsedTime = 0;
@@ -81,86 +75,63 @@ class NotePad extends React.Component {
 				clearInterval(interval);
 				this.startTimer();
 				this.setState({
-					fastForward : false
+					fastForward: false
 				});
 			}
-
 		}, intervalDelay);
 	}
 
 	startTimer () {
-		
 		this.stopTimer();
 
 		this.timerInterval = setInterval(this.updateTime.bind(this), 1000);
 	}
 
 	stopTimer () {
-
 		clearInterval(this.timerInterval);
 		this.timerInterval = 0;
 	}
 
 	timerState () {
-
 		return this.timerInterval ? 'on' : 'off';
 	}
 
 	updateTime () {
-
-		let newTime = this.state.elapsedTime+1;
-
-		this.setState({elapsedTime : newTime});
-	}
-
-	playerHand (player) {
-
+		this.setState({
+			elapsedTime: this.state.elapsedTime + 1
+		});
 	}
 
 	checkLoadingPoints () {
-
-		let anyPoint;
-
-		this.state.nextPoints.forEach(point => {
-			
-			if(point.match(/^[0-9]+$/)) {
-				anyPoint = true;
-				return false;
-			}
-		});
+		const anyPoint = this.state.nextPoints.some(
+			point => point.match(/^[0-9]+$/)
+		);
 
 		this.setState({
-			loadingPoints : anyPoint
+			loadingPoints: anyPoint
 		});
 
 		if(anyPoint) {
-
 			this.onLoadingPoints();
-		
 		} else {
-
 			this.onLoadFinished();
 		}
 	}
 
 	onLoadingPoints () {
-
 		this.setState({
-			timerPaused : false
+			timerPaused: false
 		});
 
 		this.stopTimer();
 	}
 
 	onLoadFinished () {
-
 		this.startTimer();
 	}
 
 	playersPoints () {
-
-		let points = this.state.players.map((p, index) => (
-			
+		const points = this.state.players.map((p, index) => (
 			<div className="col">
 
 				{/* Player points */}
@@ -180,7 +151,6 @@ class NotePad extends React.Component {
 	}
 
 	timings () {
-
 		return (
 			<div className="timer">
 				{this.state.history.slice(1).map((round, i) => <div className="row animated bounceInLeft" key={'timer-'+i}><span>{this.minimalTime(round.time)}</span></div>)}
@@ -189,32 +159,26 @@ class NotePad extends React.Component {
 	}
 
 	minimalTime (seconds) {
-
 		return `${Math.floor(seconds / 60)}'${seconds % 60}''`;
 	}
 
 	changePoints (event) {
-
-		let input = event.target;
-
-		let index = input.getAttribute('data-index');
-
-		let prevPoints = this.state.nextPoints;
-
-		let newPoints = input.value;
+		const input = event.target;
+		const index = input.getAttribute('data-index');
+		const prevPoints = this.state.nextPoints;
+		const newPoints = input.value;
 
 		prevPoints[index] = newPoints;
 
 		this.setState({
-			nextPoints : prevPoints
+			nextPoints: prevPoints
 		});
 
 		this.checkLoadingPoints();
 	}
 
 	playersHeader () {
-
-		let players = this.state.players.map(player => (
+		const players = this.state.players.map(player => (
 			<div className="col">
 				<div className="cell">
 					<span>
@@ -232,61 +196,46 @@ class NotePad extends React.Component {
 	}
 
 	validPoints () {
-
-		let newPoints = this.state.nextPoints;
+		const newPoints = this.state.nextPoints;
+		const errors = [];
 
 		let valid = true;
-
 		let winner;
 
-		let errors = [];
-
 		if(newPoints.length != this.state.players.length) {
-
 			valid = false;
 			errors.push('¡Faltan puntajes!');
 		}
 
-		newPoints.forEach(points => {
-
+		newPoints.forEach((points) => {
 			if( ! points.match(/^[0-9]+$/)) {
-
 				errors.push('Los puntajes deben ser valores númericos');
-
-				return valid = false;
-			}
-
-			if(points == '0') {
-
+				valid = false;
+			} else if(points === '0') {
 				winner = true;
 			}
 		});
 
-		if( ! winner ) {
-
+		if( !winner ) {
 			valid = false;
 			errors.push('Debe haber algún ganador de la ronda')
 		}
 
-		return { valid , errors	};
+		return { valid, errors };
 	}
 
 	savePoints () {
-
-		let validatedPoints = this.validPoints();
+		const validatedPoints = this.validPoints();
 
 		if(validatedPoints.valid) {
-
-			let points = this.state.nextPoints;
+			const points = this.state.nextPoints;
 
 			this.updateHistory(points);
 			this.updatePlayers(points);
 			this.resetNextPoints();
 			this.reStartTimer();			
 			this.checkWinner();
-		
 		} else {
-
 			this.setState({
 				errorMessage : {
 					message	: validatedPoints.errors,
@@ -297,62 +246,50 @@ class NotePad extends React.Component {
 	}
 
 	checkWinner () {
-
 		let endedGame;
 		let winner;
 
 		this.state.players.forEach(player => {
-
 			if(player.isWinning) {
 				winner = player;
 			}
-
 			if(player.points >= 500) {
 				endedGame = true;
-				return false;
 			}
 		});
 
 		if(endedGame && winner) {
+			const { players, history } = this.state;
 
 			this.props.onGameEnd({
-				players : this.state.players,
-				history : this.state.history,
-				winner	: winner
+				players,
+				history,
+				winner
 			});
 		}
 	}
 
-	saveCookies () {
-
-	}
-
 	updateHistory (points) {
-
-		let elapsedTime = this.state.elapsedTime;
-
-		let history = this.state.history;
-
-		let previousHistory = history[history.length - 1];
-
-		let newPoints = previousHistory.points.map((prevPoints, i) => prevPoints + parseInt(points[i]));
+		const { elapsedTime, history } = this.state;
+		const previousHistory = history[history.length - 1];
+		const newPoints = previousHistory.points.map((prevPoints, i) => prevPoints + parseInt(points[i]));
 
 		this.setState({
 			history : history.concat([{
-				points	: newPoints,
-				time	: elapsedTime
+				points: newPoints,
+				time: elapsedTime
 			}])
 		});
 	}
 
 	updatePlayers (points) {
-
 		let winningPlayer;
 
-		const updateWinner = player => {
-
+		const updateWinner = (player) => {
 			if( ! winningPlayer || player.points < winningPlayer.points ) {
-				if (winningPlayer) winningPlayer.updateWinning(false);
+				if (winningPlayer) {
+					winningPlayer.updateWinning(false);
+				}
 				player.updateWinning(true);
 				winningPlayer = player;
 			} else if(player.points == winningPlayer.points) {
@@ -362,7 +299,7 @@ class NotePad extends React.Component {
 
 		let nextPlayerHand;
 
-		const updateHand = player => {
+		const updateHand = (player) => {
 			if(player.isHand) {
 				player.updateHand(false);
 				nextPlayerHand = (player.index + 1) % this.state.players.length;
@@ -370,14 +307,15 @@ class NotePad extends React.Component {
 		}
 
 		// Gets players updated
-		let players = this.state.players.map((player, i) => {
+		const players = this.state.players.map((player, i) => {
+			const playerRoundPoints = points[i];
 
-			let playerRoundPoints = points[i];
-
+			// Makes updates
 			player.updatePoints(playerRoundPoints);
 			player.updateWons(playerRoundPoints);
 			player.updateWinning(false);
 			
+			// Updates hand and winner
 			updateHand(player);
 			updateWinner(player);
 
@@ -392,14 +330,10 @@ class NotePad extends React.Component {
 	}
 
 	handleLoad (event) {
-
 		if ( this.state.loadingPoints ) {
-
 			this.savePoints();
-
 		} else {
-
-			let timerPaused = this.timerState() == 'on';
+			const timerPaused = this.timerState() == 'on';
 
 			if(timerPaused) {
 				this.stopTimer();
@@ -412,26 +346,21 @@ class NotePad extends React.Component {
 	}
 
 	removeError () {
-
 		this.setState({
-			errorMessage : null
+			errorMessage: null
 		});
 	}
 
 	errorShow (event) {
+		const { message, icon } = event.target.dataset;
 
-		let errorMessage = {
-			message	: event.target.dataset.message,
-			icon	: event.target.dataset.icon
-		}
+		const errorMessage = { message, icon };
 
 		this.setState({ errorMessage });
 	}
 
 	render () {
-		
 		return (
-
 			<div className={"step notepad" + (this.state.loadingPoints ? ' loading' : '') + (this.state.timerPaused ? ' timer-paused' : '') + (this.state.loadingPoints && this.validPoints().valid ? ' loaded' : '')}>
 				
 				<Clock elapsedTime={this.state.elapsedTime} onClick={this.handleLoad.bind(this)} loadingPoints={this.state.loadingPoints} fastForward={this.state.fastForward} timerPaused={this.state.timerPaused} />

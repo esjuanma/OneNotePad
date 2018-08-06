@@ -4,34 +4,30 @@ import Errors from '../Errors/Errors.jsx';
 class GameEnd extends React.Component {
 
 	constructor(props) {
-		
 		super(props)
 
 		this.state = {};
 	}
 
 	resetGame () {
-
+		// to-do
 	}
 
 	playAnother () {
-		
+		// to-do
 	}
 
 	errorShow (event) {
+		const { message, icon } = event.target.dataset;
 
-		let errorMessage = {
-			message	: event.target.dataset.message,
-			icon	: event.target.dataset.icon
-		}
+		const errorMessage = { message, icon }
 
 		this.setState({ errorMessage });
 	}
 
 	removeError () {
-
 		this.setState({
-			errorMessage : null
+			errorMessage: null
 		});
 	}
 

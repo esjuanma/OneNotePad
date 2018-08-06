@@ -10,22 +10,18 @@ class Player {
 	}
 
 	updatePoints (playerRoundPoints) {
-	
 		this.points += playerRoundPoints * 1;
 	}
 
 	updateWons (playerRoundPoints) {
-
 		this.wons += playerRoundPoints == 0 ? 1 : 0;
 	}
 
 	updateHand (isHand) {
-
 		this.isHand = isHand;
 	}
 
 	updateWinning (isWinning) {
-
 		this.isWinning = isWinning;
 	}
 }

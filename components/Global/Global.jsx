@@ -7,7 +7,7 @@ import Start from '../Start/Start.jsx';
 import NotePad from '../NotePad/NotePad.jsx';
 import GameEnd from '../GameEnd/GameEnd.jsx';
 
-let colors = {
+const colors = {
 	start	: '#FE1B24',
 	notepad	: '#008DE5',
 	gameEnd	: '#01A358'
@@ -16,49 +16,42 @@ let colors = {
 class Game extends React.Component {
 	
 	constructor(props) {
-
 		super(props);
 
 		this.state = {
-			view	: 'start'
+			view: 'start'
 		};
 	}
 
 	startGame (players) {
-
-		let view = 'notepad';
-
 		this.setState({ players });
 
-		this.setView(view);
+		this.setView('notepad');
 	}
 
 	setView (view) {
-		
 		this.setState({view});
 
 		document.body.style.backgroundColor = colors[view];
 	}
 
 	endGame (data) {
-
 		this.saveGame(data);
 
 		this.setState({
-			winner : data.winner.name
+			winner: data.winner.name
 		});
 
 		this.setView('gameEnd');
 	}
 
 	saveGame (data) {
-
 		// If no previous history..
 		if( ! localStorage.gameHistory ) {
 			localStorage.setItem('gameHistory', '[]');
 		}
 
-		let local = JSON.parse(localStorage.getItem('gameHistory'));
+		const local = JSON.parse(localStorage.getItem('gameHistory'));
 
 		local.push(data);
 
@@ -66,16 +59,17 @@ class Game extends React.Component {
 	}
 
 	render () {
-
 		switch(this.state.view) {
+			case 'start':
+				return <Start finishLoad={this.startGame.bind(this)} />;
+			
+			case 'notepad':
+				return <NotePad players={this.state.players} onGameEnd={this.endGame.bind(this)} />;
 
-			case 'start': return <Start finishLoad={this.startGame.bind(this)} />;
-			case 'notepad': return <NotePad players={this.state.players} onGameEnd={this.endGame.bind(this)} />;
-			case 'gameEnd': return <GameEnd winner={this.state.winner} />;
+			case 'gameEnd':
+				return <GameEnd winner={this.state.winner} />;
 		}
 	}
 }
-
-console.log('Qué onda')
 
 ReactDOM.render(<Game/>, document.getElementById('app'));

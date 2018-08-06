@@ -4,15 +4,20 @@ import Errors from '../Errors/Errors.jsx';
 class Start extends React.Component {
 
 	constructor(props) {
-		
 		super(props)
 
 		this.state = {
-			player		: '',
-			players		: [],
-			fadedNames	: [],
-			errorMessage: '',
-			ready		: false
+			// Current player being loaded
+			player: '',
+
+			// Current loaded players
+			players: [],
+
+			// Just for animation purposes
+			fadedNames: [],
+
+			// Loading error message
+			errorMessage: ''
 		}
 
 		this.handleChange = this.handleChange.bind(this);
@@ -21,77 +26,80 @@ class Start extends React.Component {
 	}
 
 	finishLoad () {
-
-		let players = this.submit();
+		const players = this.submit();
 
 		if(players.length < 2) {
-
 			this.setState({
 				errorMessage : {
-					message	: 'Debe haber al menos 2 jugadores',
-					icon	: 'exclamation-triangle'
+					message: 'Debe haber al menos 2 jugadores',
+					icon: 'exclamation-triangle'
 				}
 			});
-
-			return;
+		} else {
+			this.props.finishLoad(players);
 		}
-
-		this.props.finishLoad(players);
 	}
 
 	handleChange (event) {
-
-		this.setState({player: event.target.value});
+		this.setState({
+			player: event.target.value
+		});
 	}
 
 	submit (event) {
-
 		event && event.preventDefault();
 		
-		let player = this.state.player;
+		const { player, players, fadedNames } = this.state;
 
-		if(player == '') return this.state.players;
+		if (player == '') {
+			return players;
+		}
 
-		let players = this.state.players.concat([player]);
+		const newPlayers = [...players, player];
 
 		this.setState({
-			player		: '',
-			players		: players,
-			fadedNames	: this.state.fadedNames.concat(player)
+			players: newPlayers,
+			player: '',
+			fadedNames: [..fadedNames, player]
 		});
 
 		this.removeFadedName();
 
-		return players;
+		return newPlayers;
 	}
 
 	removeFadedName () {
-
 		setTimeout(() => {
-
 			this.setState({
-				fadedNames : this.state.fadedNames.slice(1)
+				fadedNames: this.state.fadedNames.slice(1)
 			});	
-
 		}, 1000);
 	}
 
 	pantallaCompleta () {
-
 		document.body.requestFullscreen();
 	}
 
 	removeError () {
-
 		this.setState({
-			errorMessage : null
+			errorMessage: null
 		});
 	}
 
 	render () {
-		
-		return (
+		const {
+			players,
+			player,
+			fadedNames,
+			errorMessage
+		} = this.state;
 
+		// When there's 2 players or 2nd is being loaded, you can start the game
+		const readyToStart = players.length && (
+			players.length >= 2 || player !== ''
+		);
+
+		return (
 			<div className="step start">
 				
 				<form onSubmit={this.submit}>
@@ -103,23 +111,23 @@ class Start extends React.Component {
 					<div className="input-container animated slideInUp">
 						
 						{/* Player input */}
-						<input value={this.state.player} type="text" className="players" onChange={this.handleChange} />
+						<input value={player} type="text" className="players" onChange={this.handleChange} />
 						
 						{/* Right arrow */}
 						<i className="fa fa-arrow-right user-submit" onClick={this.submit}></i>
 						
 						{/* Faded name animation */}
-						{this.state.fadedNames.length != 0 &&
-							this.state.fadedNames.map(fadedName => <div className="faded-name animated fadeOutUp">{fadedName}</div>)
+						{fadedNames.length != 0 &&
+							fadedNames.map(fadedName => <div className="faded-name animated fadeOutUp">{fadedName}</div>)
 						}
 					</div>
 
 					{/* Finish load */}
-					<div className={"prompt-submit animated slideInUp" + (this.state.players.length >= 2 || (this.state.players.length == 1 && this.state.player != '') ? ' ready' : '') } onClick={this.finishLoad}><i className="fa fa-check"></i></div>
+					<div className={`prompt-submit animated slideInUp ${readyToStart && 'ready'}`} onClick={this.finishLoad}><i className="fa fa-check"></i></div>
 
 				</form>
 
-				<Errors errorMessage={this.state.errorMessage} onErrorClose={this.removeError.bind(this)} />
+				<Errors errorMessage={errorMessage} onErrorClose={this.removeError.bind(this)} />
 
 			</div>
 		);
